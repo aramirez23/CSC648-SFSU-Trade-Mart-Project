@@ -1,0 +1,124 @@
+<!--
+     itempage.html
+     Description: The itempage will show the results of the item that was chosen
+     in the search results page. By choosing a specific item, the information will 
+     be retrieved from the DB and be displayed on this page. The content should 
+     be formatted so that it will display according to the resolution of the screen.
+-->
+{% extends "base.html" %}
+{% block content %}
+
+<head>
+    <title>SFSU TradeMart</title>
+</head>
+<style>
+    /* Will keep the text centered in the text column */
+    p {
+        text-align: center;
+    }
+
+    /* All images will be formatted to fit the browser */
+    .listingImg {
+       max-width: 100%;
+    }
+
+    .responsive-listing-title {
+        font-size: 4vw;
+    }
+
+    .responsive-listing-info {
+        font-size: 2vw;
+    }
+
+    .responsive-listing-price {
+        font-size: 3vw;
+    }
+
+    .responsive-listing-description {
+        font-size: 2vw;
+    }
+
+    @media screen and (max-width: 575px) {
+        .responsive-nav-links {
+            font-size: 1.5rem;
+        }
+
+        .responsive-table-text {
+            font-size: 3.5vw;
+        }
+
+        .responsive-listing-title {
+            font-size: 7vw;
+        }
+        
+        .responsive-listing-info {
+            font-size: 5vw;
+        }
+        
+        .responsive-listing-price {
+            font-size: 6vw;
+        }
+        
+        .responsive-listing-description {
+            font-size: 5vw;
+        }
+    }
+</style>
+<div class="row">
+    {% set listingData = listingdata[0] %}
+    {% set userData = userData[0] %}
+    {% set fileName = listingData[3]|string %}
+    {% set path = pathPrefix + "thumbnail_" + fileName+"_half_size.jpg" %}
+    <!-- Container used to hold images -->
+    <div class="col-sm-8">
+        <p><img class="img-fluid" src="{{path}}" width="750" height="750"> </p>
+    </div>
+    <div class="col-sm-4">
+        <!-- Container to display information of the product from the DB -->
+        {% set listingTitle = listingData[0] %}
+        <!-- Font size used to adjust size of text based off broswer size -->
+        <p class="responsive-listing-title"> <b>{{listingTitle}}</b> </p>
+        {% set userName = userData[0]%}
+	<p class="responsive-listing-info">From: {{userName}}</p>
+        {% set listingQuality = listingData[6] %}
+        <p class="responsive-listing-info">Quality: {{listingQuality}} </p>
+        <p class="responsive-listing-price">Suggested Price:</p>
+        {% set listingPrice = listingData[1] %}
+        <div>
+            <p class="responsive-listing-price"><b>${{listingPrice}}</b></p>
+        </div>
+
+        {% set listingDesc = listingData[4] %}
+        <p class="responsive-listing-description">Description: {{listingDesc}}</p>
+
+        <div class="row">
+            <div class="col">
+            </div>
+            <!-- Contact Seller Button -->
+            <form method="POST" action="contact" target="_blank">
+            <div class="btn-toolbar justify-content-between">
+                <input type="hidden" name="listingId" value="{{listingData[3]}}">
+                <div class="btn-group" role="group" aria-label="Contact Seller">
+                  <!-- <a href="/contact" class="btn btn-info" role="button">Contact Seller</a> -->
+                  <button class="btn btn-primary" formaction="contact">Contact Seller</button>
+                </div>
+              </div>
+            </form>  
+            <div class="col">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+            </div>
+            <!-- Return Button -->
+            <!--<div class="btn-toolbar justify-content-between">
+                <div class="btn-group" role="group" aria-label="Return">
+                    <button type="button" class="btn btn-primary">Return</button>
+                </div>
+            </div> -->
+            <div class="col">
+            </div>
+        </div>
+
+        {% endblock %}

@@ -1,0 +1,195 @@
+<!--
+    File: createListing.html
+    Author: Chandler Cruz
+    Description: Users will access and use the form
+    on this page to create their own listings. It is accessible
+    from "Create a listing" on the navbar. This page will also
+    check if the user is logged in when they create a listing,
+    offering for them to log in or register if they aren't.
+-->
+
+{% extends "base.html" %}
+{% block content %}
+<head>
+	    <title>Create Listing</title>
+</head>
+<div class="container">
+    <center>
+        <h1>Create A Listing</h1>
+    </center>
+
+    {% if popUp == 'True' %}
+    <script>
+        $(window).on('load', function () {
+            $('#myModal').modal('show');
+        });
+    </script>
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <center>
+                        {{message}}
+                    </center>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary mx-auto" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <form name="createListingForm" href="#" method="POST" enctype="multipart/form-data">
+        <center>
+            <p>* = Required</p>
+        </center>
+
+        <!-- listing title -->
+        <div class="row">
+            <div class="col text-right">
+                <label for="listingTitle">* Listing Title</label>
+            </div>
+            <div class="col">
+                <input type="text" name="listingTitle" id="listingTitle" required>
+            </div>
+        </div>
+
+        <!-- listing category -->
+        <div class="row">
+            <div class="col text-right">
+                <label for="category">* Category</label>
+            </div>
+            <div class="col">
+                <select name="category" id="category" required>
+                    <option value="Books">Books</option>
+                    <option value="Editing">Editing</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Tutoring">Tutoring</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- listing condition -->
+        <div class="row">
+            <div class="col text-right">
+                <label for="condition">* Rating</label>
+            </div>
+            <div class="col">
+                <select name="condition" id="condition" required>
+                    <option value="poor">Poor</option>
+                    <option value="fair">Fair</option>
+                    <option value="good">Good</option>
+                    <option value="great">Great</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- listing price -->
+        <div class="row">
+            <div class="col text-right">
+                <label for="price">* Price</label>
+            </div>
+            <div class="col">
+                <input type="number" name="price" id="price" required>
+                <br>
+            </div>
+        </div>
+
+        <!-- listing location -->
+        <div class="row">
+            <div class="col text-right">
+                <label for="location">* Location</label>
+            </div>
+            <div class="col">
+                <select name="location" id="location" required>
+                    {% for location in locations %}
+                        <option value="{{location[0]}}">{{location[0]}}</option>
+                        <!-- <option value="library">Library</option>
+                        <option value="bookstore">Outside Bookstore</option>
+                        <option value="gym">Wellness Center</option> -->
+                        {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- listing description -->
+        <div class="row">
+            <div class="col text-right">
+                <label for="description">Description</label>
+            </div>
+            <div class="col">
+                <textarea id="description" name="description" rows="4" cols="50"></textarea>
+            </div>
+        </div>
+
+        <!-- listing image -->
+        <div class="row">
+            <div class="col text-right">
+                <label for="image">Image</label>
+            </div>
+            <div class="col">
+                <input type="file" name="image" id="image">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                <div class="btn-toolbar justify-content-between">
+                    <div class="btn-group" role="group" aria-label="cancel">
+                        <button type="button" class="btn btn-primary">Cancel</button>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="submit">
+                        <button type="submit" class="btn btn-primary" id="submitButton" data-toggle="modal" data-target="#lazy-registration">Create Listing**</button>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p><center>**It will take up to 24 hours to approve listing</center></p>
+            </div>
+        </div>
+        {% if username == '' %}
+        <div class="modal" id="lazy-registration" tabindex="0" role="form" aria-labelledby="lazy-registration-window" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1><center>You must have an account to create a listing</center></h1>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h2>LOG IN</h2>
+                        <center><label for="loginEmail">Email: </label>
+                        <input type="text" name="loginEmail" id="loginEmail" required></center>
+                        <br>
+                        <center><label for="password">Password: </label>
+                        <input type="password" name="password" id="password" required></center>
+                        <center><a href="" class="nav-link" id="forgotPassword">Forgot Password</a></center>
+                        <center><div class="btn-group" role="group" aria-label="submit">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div></center>
+                        <br>
+                        <h2>OR</h2>
+                        <div class="nav-item">
+                            <center><a href="/register" class="nav-link" id="registerButton">Create an Account</a></center>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+        {% endif %}    
+    </form>
+</div>
+{% endblock %}

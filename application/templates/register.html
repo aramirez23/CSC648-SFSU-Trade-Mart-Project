@@ -1,0 +1,185 @@
+<!-- 
+    register.html
+    Description:
+    This page is where a user can make an account for the website.
+
+    Contents:
+    This page contains a form where a user can input their information necessary when creating a profile
+        Fields used:
+        -First and last name
+        -User name
+        -Email (verified that it is a SFSU account)
+        -Password (verified that it matches after confirming password)
+        -Terms agreement
+        -Captcha verification
+ -->
+<!-- navbar -->
+{% extends "base.html" %}
+<!-- end navbar -->
+
+<!-- contents to be placed in -->
+{% block content %}
+<!-- page title -->
+
+<head>
+    <title>Register</title>
+</head>
+<!-- end page title -->
+
+<!-- form containter -->
+<div class="container">
+    <center>
+        <h1>Register Account</h1>
+    </center>
+
+    <!-- this is a popup to show the status of account creation (error or success) -->
+    <!-- {{popUp}} -->
+    {% if popUp == "True" %}
+    <script>
+        $(window).on('load', function () {
+            $('#myModal').modal('show');
+        });
+    </script>
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <center>
+                        {{message}}
+                    </center>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary mx-auto" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end popup -->
+
+    <form name="registrationForm" href="/register" method="POST">
+        <center>
+            <p>Note: It may take up to one day for your account to be in the system.</p>
+            <p>* = Required</p>
+        </center>
+
+        <!-- first name -->
+        <div class="row">
+            <div class="col">
+                <label for="firstName">* First Name</label> <br>
+                <input type="text" id="firstName" name="firstName" maxlength="45" required
+                    onblur="return alphaNumericCheck('firstName')">
+            </div>
+        </div>
+        <!-- end first name -->
+
+        <!-- last name -->
+        <div class="row">
+            <div class="col">
+                <label for="lastName">* Last Name</label> <br>
+                <input type="text" id="lastName" name="lastName" maxlength="45" required
+                    onblur="return alphaNumericCheck('lastName')">
+            </div>
+        </div>
+        <!-- end last name -->
+
+        <!-- username -->
+        <div class="row">
+            <div class="col">
+                <label for="userName">* Username</label> <br>
+                <input type="text" id="userName" name="userName" maxlength="45" required
+                    onblur="return alphaNumericCheck('userName')">
+                <br> <br> <br>
+            </div>
+        </div>
+        <!-- end username -->
+
+        <!-- email -->
+        <div class="row">
+            <div class="col">
+                <label for="emailAddress">* Email address</label> <br>
+                <input type="text" id="emailAddress" name="emailAddress"
+                    onblur="emailCheck(); return specialCharCheck(emailAddress)" onfocus="emailCheck()" maxlength="45"
+                    required>
+                <label for="emailAddress" id="emailError" style="color: red;"></label>
+                <br>
+                <label class="text-muted" for="emailAddress">Only accepts SFSU email</label> <br>
+            </div>
+        </div>
+        <!-- end email -->
+
+        <!-- create password -->
+        <div class="row">
+            <div class="col">
+                <label for="passInit">* Enter Password</label> <br>
+                <input type="password" id="passInit" name="passInit" maxlength="45" required
+                    onblur="return alphaNumericCheck('passInit')">
+            </div>
+        </div>
+        <!-- end create password -->
+
+        <!-- confirm password -->
+        <div class="row">
+            <div class="col">
+                <label for="passConfirm">* Confirm Password</label> <br>
+                <input type="password" id="passConfirm" name="passConfirm"
+                    onblur="passVerify(); return alphaNumericCheck('passConfirm')" maxlength="45" required onsubmit="">
+                <label for="passConfirm" id="passError" style="color:red"
+                    onblur="passVerify(); return alphaNumericCheck('passConfirm')"></label>
+                <br> <br>
+            </div>
+        </div>
+        <!-- end confirm password -->
+
+        <!-- accept terms -->
+        <div class="row">
+            <div class="col">
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="agreeBox" required>
+                    <label class="form-check-label" for="agreeBox">
+                        <a href="#" style="text-decoration: underline;">I accept the Terms of Service</a>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- end accept terms -->
+
+        <!-- captcha -->
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                <center>
+                    <div class="g-recaptcha" data-sitekey="6LdFBdoZAAAAAFns5dEaiL5uZ9iVWuy5nWrqJA4g"
+                        data-callback="captchaCallback">
+                    </div>
+                </center>
+            </div>
+
+            <div class="col">
+            </div>
+        </div>
+        <!-- end captcha -->
+
+        <br><br>
+        <!-- cancel/submit button -->
+        <div class="row">
+            <div class="col">
+                <div class="btn-toolbar justify-content-between">
+                    <div class="btn-group" role="group" aria-label="cancel">
+                        <button type="button" class="btn btn-primary">Cancel</button>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="submit">
+                        <button type="submit" class="btn btn-primary" disabled id="submitButton">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end cancel/submit button -->
+    </form>
+</div>
+<!-- end form container -->
+
+{% endblock %}
+<!-- end contents -->
